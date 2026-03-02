@@ -47,7 +47,7 @@ jobs:
       - name: Build and push ARMv7 image
         uses: docker/build-push-action@v6
         with:
-          context: ./element-web
+          context: element-web
           file: ./Dockerfile
           platforms: linux/arm/v7
           push: true
