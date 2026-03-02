@@ -17,6 +17,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # -----------------------------
+      # Clone Element-web source
+      # -----------------------------
+      - name: Clone Element-web source
+        run: |
+          git clone https://github.com/element-hq/element-web.git element-web
+          cd element-web
+          git checkout master
         
       - name: Set lowercase owner
         id: vars
@@ -36,9 +45,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push ARMv7 image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./element-web
           file: ./Dockerfile
           platforms: linux/arm/v7
           push: true
