@@ -51,15 +51,16 @@ jobs:
         
           cd sygnal/docker
         
-          # 1. Inject a custom ARG at the top of the Dockerfile
-          sed -i '1i ARG TARGET_ARCH_FIX=linux/armv7' Dockerfile
-          
-          # 2. Replace $BUILDPLATFORM with the new variable
-          # This target specifically the 'uv' stage 
-          # sed -i 's|--platform=\$BUILDPLATFORM|--platform=linux/armv7|g' Dockerfile
-
           # This command finds the 'uv' FROM line and inserts the platform flag.
           sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=\$BUILDPLATFORM ghcr.io/astral-sh/uv|' Dockerfile
+
+          # Inject environment variables for uv to target ARMv7
+          # We insert these right after the FROM line in the builder stage
+          sed -i '/AS builder/a ENV UV_VISUAL_ARCH=armv7\\nENV UV_SYSTEM_PYTHON=1' Dockerfile
+
+          # 3. Ensure the final runtime uses the correct Python base for ARMv7
+          # This forces the final stage to use the platform you defined in the workflow
+          sed -i 's|FROM python:|FROM --platform=linux/arm/v7 python:|g' Dockerfile
           
           # Optional: Verify the change in the logs
           grep "FROM" Dockerfile
@@ -91,5 +92,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # tags: ghcr.io/${{ steps.vars.outputs.owner_lc }}/sygnal:armv7
-          build-args: |
-            MY_PLATFORM_OVERRIDE=linux/armv7
+
