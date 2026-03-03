@@ -48,6 +48,9 @@ jobs:
 
       - name: Patch Dockerfile variables
         run: |
+        
+          cd sygnal/docker
+        
           # 1. Inject a custom ARG at the top of the Dockerfile
           sed -i '1i ARG MY_PLATFORM_OVERRIDE' Dockerfile
           
