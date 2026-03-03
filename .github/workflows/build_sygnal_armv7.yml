@@ -55,6 +55,12 @@ jobs:
           # This target specifically the 'uv' stage 
           sed -i 's/--platform=\$BUILDPLATFORM/--platform=\$MY_PLATFORM_OVERRIDE/g' Dockerfile
 
+          # This command finds the 'uv' FROM line and inserts the platform flag.
+          sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=\$MY_PLATFORM_OVERRIDE ghcr.io/astral-sh/uv|' Dockerfile
+          
+          # Optional: Verify the change in the logs
+          grep "FROM" Dockerfile
+
       - name: Build and push ARMv7 image
         uses: docker/build-push-action@v6
         with:
@@ -64,4 +70,4 @@ jobs:
           push: true
           tags: ghcr.io/${{ steps.vars.outputs.owner_lc }}/sygnal:armv7
           build-args: |
-            MY_PLATFORM_OVERRIDE=linux/armv7
+            MY_PLATFORM_OVERRIDE=linux/arm/v7
