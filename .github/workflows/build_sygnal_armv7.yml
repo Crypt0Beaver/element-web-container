@@ -52,14 +52,14 @@ jobs:
           cd sygnal/docker
         
           # 1. Inject a custom ARG at the top of the Dockerfile
-          sed -i '1i ARG MY_PLATFORM_OVERRIDE' Dockerfile
+          sed -i '1i ARG TARGET_ARCH_FIX=linux/armv7' Dockerfile
           
           # 2. Replace $BUILDPLATFORM with the new variable
           # This target specifically the 'uv' stage 
-          sed -i 's|--platform=\$BUILDPLATFORM|--platform=linux/armv7|g' Dockerfile
+          # sed -i 's|--platform=\$BUILDPLATFORM|--platform=linux/armv7|g' Dockerfile
 
           # This command finds the 'uv' FROM line and inserts the platform flag.
-          sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=linux/armv7 ghcr.io/astral-sh/uv|' Dockerfile
+          sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=${TARGET_ARCH_FIX} ghcr.io/astral-sh/uv|' Dockerfile
           
           # Optional: Verify the change in the logs
           grep "FROM" Dockerfile
