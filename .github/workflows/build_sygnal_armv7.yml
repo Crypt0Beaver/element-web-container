@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: sygnal
-          # file: ./Dockerfile
+          file: docker/Dockerfile
           platforms: linux/arm/v7
           push: true
           tags: ghcr.io/${{ steps.vars.outputs.owner_lc }}/sygnal:armv7
