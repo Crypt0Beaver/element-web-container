@@ -5,6 +5,8 @@ on:
     branches: 
       - main
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
   
 jobs:
   build:
@@ -21,11 +23,11 @@ jobs:
       # -----------------------------
       # Clone Element-web source
       # -----------------------------
-      - name: Clone Element-web source
+      - name: Clone Sygnal source
         run: |
           git clone https://github.com/element-hq/sygnal.git sygnal
           cd sygnal
-          git checkout master
+          git checkout main
         
       - name: Set lowercase owner
         id: vars
