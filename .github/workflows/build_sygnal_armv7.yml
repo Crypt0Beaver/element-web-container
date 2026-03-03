@@ -73,4 +73,4 @@ jobs:
           push: true
           tags: ghcr.io/${{ steps.vars.outputs.owner_lc }}/sygnal:armv7
           build-args: |
-            MY_PLATFORM_OVERRIDE=linux/arm/v7
+            MY_PLATFORM_OVERRIDE=linux/armv7
