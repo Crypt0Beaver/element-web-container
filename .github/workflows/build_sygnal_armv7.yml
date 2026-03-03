@@ -59,7 +59,7 @@ jobs:
           # sed -i 's/--platform=\$BUILDPLATFORM/--platform=\$MY_PLATFORM_OVERRIDE/g' Dockerfile
 
           # This command finds the 'uv' FROM line and inserts the platform flag.
-          sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=\$MY_PLATFORM_OVERRIDE ghcr.io/astral-sh/uv|' Dockerfile
+          sed -i 's|FROM ghcr.io/astral-sh/uv|FROM --platform=linux/armv7 ghcr.io/astral-sh/uv|' Dockerfile
           
           # Optional: Verify the change in the logs
           grep "FROM" Dockerfile
